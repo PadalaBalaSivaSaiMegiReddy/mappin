@@ -1,34 +1,24 @@
 const mongoose=require("mongoose");
 
-const PinSchema=new mongoose.Schema({
+const UserScheme=new mongoose.Schema({
     username:{
         type:String,
         require:true,
+        min:3,
+        max:20,
+        unique:true,
     },
-    title:{
+    email:{
         type:String,
         require:true,
-        min:3,
+        max:50,
+        unique:true,
     },
-    desc:{
+    password:{
         type:String,
         require:true,
-        min:3,
+        min:6,
     },
-    rating:{
-        type:Number,
-        require:true,
-        min:0,
-        max:4,
-    },
-    lat:{
-        type:Number,
-        require:true,},
-    long:{
-        type:Number,
-        require:true,
-    }
-
 },{timestamps:true});
 
-module.exports=mongoose.model("Pin",PinSchema);
+module.exports=mongoose.model("User",UserScheme);
