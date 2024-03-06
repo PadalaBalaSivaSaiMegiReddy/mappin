@@ -34,18 +34,22 @@ export default function App() {
     };
     getPins();
   }, []);
+  const defaultLat=newPlace?newPlace.lat:27;
+  const defaultLong=newPlace?newPlace.long:78;
 
-  console.log(newPlace)
-  return (<Map
-  mapboxAccessToken={import.meta.env.VITE_APP_MAPBOX}
-  initialViewState={{
-    longitude: 77.216721,
-    latitude: 28.644800,
-    zoom: 4
-  }} onDblClick={handleAddClick}
-  style={{width: "100vw", height: "100vh"}}
-  mapStyle="mapbox://styles/mapbox/streets-v9"
->
+  console.log(newPlace && newPlace.lat)
+  return (
+    <Map
+      mapboxAccessToken={import.meta.env.VITE_APP_MAPBOX}
+      initialViewState={{
+        longitude: defaultLong,
+        latitude: defaultLat,
+        zoom: 4
+      }}
+      onDblClick={handleAddClick}
+      style={{ width: "100vw", height: "100vh" }}
+      mapStyle="mapbox://styles/mapbox/streets-v9"
+    >
 
   {pins.map((p)=>
 <>
@@ -83,7 +87,24 @@ export default function App() {
 
 <Popup longitude={newPlace.long} latitude={newPlace.lat} closeButton={true} closeOnClick={false}
           anchor="left">
-            You clicked here
+            <div>
+              <form className='form'>
+                <label>Title</label>
+                <input placeholder='Enter a title'></input>
+                <label>Review</label>
+                <textarea placeholder='Review this place'/>
+                <label>Rating</label>
+                <select>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                </select>
+                <button className='submitButton' type="submit">Add Pin</button>
+                
+              </form>
+            </div>
 </Popup>
 }
 {/* <>
