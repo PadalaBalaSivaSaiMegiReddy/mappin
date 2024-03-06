@@ -11,8 +11,16 @@ export default function App() {
   const currentUser="Jane";
   const [pins,setPins]=useState([]);
   const[currentPlaceId,setCurrentPlaceId]=useState(null);
+  const [newPlace,setNewPlace]=useState(null);
   const handleMarkerClick=(id)=>{
     setCurrentPlaceId(id);
+  }
+  const handleAddClick=(e)=>{
+    const {lng,lat}=e.lngLat;
+    setNewPlace({
+      lat:lat,
+      long:lng
+    })
   }
 
   useEffect(() => {
@@ -26,14 +34,15 @@ export default function App() {
     };
     getPins();
   }, []);
-  console.log(pins)
-  return <Map
+
+  console.log(newPlace)
+  return (<Map
   mapboxAccessToken={import.meta.env.VITE_APP_MAPBOX}
   initialViewState={{
     longitude: 77.216721,
     latitude: 28.644800,
     zoom: 4
-  }}
+  }} onDblClick={handleAddClick}
   style={{width: "100vw", height: "100vh"}}
   mapStyle="mapbox://styles/mapbox/streets-v9"
 >
@@ -68,21 +77,27 @@ export default function App() {
           }
       </Marker>
 </>
-
-
   )}
+
+  {newPlace&&
+
+<Popup longitude={newPlace.long} latitude={newPlace.lat} closeButton={true} closeOnClick={false}
+          anchor="left">
+            You clicked here
+</Popup>
+}
 {/* <>
 <Marker longitude={28} latitude={30} anchor="bottom" >
-    <FaMapMarkerAlt style={{fontSize:20,color:"slateblue"}}/>
-      </Marker>
-      <Popup longitude={78.042068} latitude={27.173891} closeButton={true} closeOnClick={false}
-          anchor="left">
-          <div className="card">
-            <label>Place</label>
-            <h4 className='place'>Taj Mahal</h4>
-            <label>Review</label>
-            <p className="desc">Beautiful place. I like it.</p>
-            <label>Rating</label>
+<FaMapMarkerAlt style={{fontSize:20,color:"slateblue"}}/>
+</Marker>
+<Popup longitude={78.042068} latitude={27.173891} closeButton={true} closeOnClick={false}
+anchor="left">
+<div className="card">
+<label>Place</label>
+<h4 className='place'>Taj Mahal</h4>
+<label>Review</label>
+<p className="desc">Beautiful place. I like it.</p>
+<label>Rating</label>
             <div className="stars">
             <FaStar className='star'/>
             <FaStar className='star'/>
@@ -97,5 +112,5 @@ export default function App() {
         </Popup>
         </> */}
 
-</Map>
+</Map>)
 }
