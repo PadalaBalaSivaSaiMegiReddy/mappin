@@ -63,7 +63,14 @@ export default function App() {
 
   console.log(newPlace && newPlace.lat)
   return (
-<div style={{ height: "100vh", width: "100%" }}>    <Map
+<div style={{ height: "100vh", width: "100%" }}> 
+<div className='for-buttons'>
+  <h1>MapPin</h1>
+  <div>
+  <button className='button logout'>Logout</button>
+        <button className='button login'>Login</button>
+        <button className='button register'>Register</button></div></div>
+   <Map
       mapboxAccessToken={import.meta.env.VITE_APP_MAPBOX}
       initialViewState={{
         longitude: defaultLong,
@@ -130,11 +137,11 @@ export default function App() {
 </Popup>
 }
 
-<Popup latitude={82} longitude={-169} 
+{/* <Popup latitude={82} longitude={-169} 
           anchor="left">
         <button className='button logout'>Logout</button>
         <button className='button login'>Login</button>
-        <button className='button register'>Register</button></Popup>
+        <button className='button register'>Register</button></Popup> */}
 </Map>
 </div>)
 }

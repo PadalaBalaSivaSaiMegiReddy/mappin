@@ -74,3 +74,18 @@ input::placeholder,textarea::placeholder{
 .register{
     background-color: slateblue;
 }
+
+.for-buttons{
+    background-color: #e4ecc2;
+    display: flex;
+    justify-content: space-between;
+}
+
+.for-buttons h1{
+    margin: -9px;
+    margin-left: 3px;
+    color: dodgerblue;
+    font-family: cursive;
+}
+
+
