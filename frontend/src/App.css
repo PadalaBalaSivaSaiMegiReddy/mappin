@@ -61,6 +61,8 @@ input::placeholder,textarea::placeholder{
     padding: 5px;
     border-radius: 5px;
     color: white;
+    margin-right: 10px;
+    cursor: pointer;
 }
 
 .logout{

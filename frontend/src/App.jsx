@@ -6,18 +6,29 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { format} from 'timeago.js'
+import Register from './components/Register';
+import Login from './components/Login';
 
 export default function App() {
-  const currentUser="Megi";
+  const myStorage = window.localStorage;
+    const [currentUser,setCurrentUser]=useState(myStorage.getItem("user"));
   const [pins,setPins]=useState([]);
   const[currentPlaceId,setCurrentPlaceId]=useState(null);
   const [newPlace,setNewPlace]=useState(null);
   const [title,setTitle]=useState(null);
   const [desc,setDesc]=useState(null);
   const [rating,setRating]=useState(0);
+  const [showRegister,setShowRegister]=useState(false);
+  const [showLogin,setShowLogin]=useState(false);
   const handleMarkerClick=(id)=>{
     setCurrentPlaceId(id);
   }
+
+  const handleLogout = () => {
+    myStorage.removeItem("user");
+    setCurrentUser(null);
+  };
+
   const handleAddClick=(e)=>{
     const {lng,lat}=e.lngLat;
     setNewPlace({
@@ -61,15 +72,33 @@ export default function App() {
 
   }
 
-  console.log(newPlace && newPlace.lat)
   return (
 <div style={{ height: "100vh", width: "100%" }}> 
 <div className='for-buttons'>
   <h1>MapPin</h1>
+  {/* <div>
+  { showRegister&&<Register setShowRegister={setShowRegister}/>}
+  {showLogin&& <Login setShowLogin={setShowLogin}/>}
+</div> */}
+  
   <div>
-  <button className='button logout'>Logout</button>
-        <button className='button login'>Login</button>
-        <button className='button register'>Register</button></div></div>
+  {currentUser ? (
+    <button onClick={handleLogout} className='button logout'>Logout</button>
+  ) : (
+    <>
+      <button onClick={() => { setShowLogin(true); setShowRegister(false); }} className='button login'>Login</button>
+      <button onClick={() => { setShowRegister(true); setShowLogin(false); }} className='button register'>Register</button>
+    </>
+  )}
+</div>
+</div>
+
+{showRegister || showLogin ? (
+        <>
+          {showRegister && <Register setShowRegister={setShowRegister} />}
+          {showLogin && <Login setShowLogin={setShowLogin} setCurrentUser={setCurrentUser} myStorage={myStorage} />}
+        </>
+      ) : (
    <Map
       mapboxAccessToken={import.meta.env.VITE_APP_MAPBOX}
       initialViewState={{
@@ -78,13 +107,12 @@ export default function App() {
         zoom: 4
       }}
       onDblClick={handleAddClick}
-      style={{ width: "100vw", height: "100vh" }}
       mapStyle="mapbox://styles/mapbox/streets-v9"
     >
 
+
   {pins.map((p)=>
 <>
-
   <Marker longitude={p.long} latitude={p.lat} anchor="bottom" >
     <FaMapMarkerAlt onClick={()=>handleMarkerClick(p._id)} style={{fontSize:20,color:p.username===currentUser?"tomato":"slateblue"}}/>
     {p._id===currentPlaceId &&
@@ -142,6 +170,6 @@ export default function App() {
         <button className='button logout'>Logout</button>
         <button className='button login'>Login</button>
         <button className='button register'>Register</button></Popup> */}
-</Map>
+</Map>)}
 </div>)
 }
