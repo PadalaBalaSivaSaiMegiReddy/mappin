@@ -1,6 +1,5 @@
 import { MdCancel } from "react-icons/md";
-import { FaBroom } from "react-icons/fa";
-import axios from "axios";
+import { FaMapPin } from "react-icons/fa";import axios from "axios";
 import { useRef, useState } from "react";
 import "./login.css";
 
@@ -36,7 +35,7 @@ export default function Login({ setShowLogin, setCurrentUser,myStorage }) {
   return (
     <div className="loginContainer">
       <div className="logo">
-        <FaBroom className="logoIcon" />
+        <FaMapPin className="logoIcon" />
         <span>MegiPin</span>
       </div>
       <form onSubmit={handleSubmit}>

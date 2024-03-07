@@ -2,8 +2,7 @@ import axios from "axios";
 import { useRef, useState } from "react";
 import "./register.css";
 import { MdCancel } from "react-icons/md";
-import { FaBroom } from "react-icons/fa";
-
+import { FaMapPin } from "react-icons/fa";
 export default function Register({ setShowRegister }) {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
@@ -25,12 +24,13 @@ export default function Register({ setShowRegister }) {
       setSuccess(true);
     } catch (err) {
       setError(true);
+      console.log(err)
     }
   };
   return (
     <div className="register-container">
       <div className="logo">
-        <  FaBroom className="logoIcon" />
+        <  FaMapPin className="logoIcon" />
         <span>MegiPin</span>
       </div>
       <form onSubmit={handleSubmit}>
