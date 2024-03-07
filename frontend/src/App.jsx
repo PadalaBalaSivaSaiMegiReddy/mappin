@@ -8,10 +8,13 @@ import axios from 'axios';
 import { format} from 'timeago.js'
 
 export default function App() {
-  const currentUser="Jane";
+  const currentUser="Megi";
   const [pins,setPins]=useState([]);
   const[currentPlaceId,setCurrentPlaceId]=useState(null);
   const [newPlace,setNewPlace]=useState(null);
+  const [title,setTitle]=useState(null);
+  const [desc,setDesc]=useState(null);
+  const [rating,setRating]=useState(0);
   const handleMarkerClick=(id)=>{
     setCurrentPlaceId(id);
   }
@@ -28,6 +31,7 @@ export default function App() {
       try {
         const allPins = await axios.get("http://localhost:8800/api/pins");
         setPins(allPins.data);
+        setNewPlace(null)
       } catch (err) {
         console.log(err);
       }
@@ -35,7 +39,27 @@ export default function App() {
     getPins();
   }, []);
   const defaultLat=newPlace?newPlace.lat:27;
+
   const defaultLong=newPlace?newPlace.long:78;
+
+  const handleSubmit=async(e)=>{
+    e.preventDefault();
+    const newPin={
+      username:currentUser,
+      title,
+      desc,
+      rating,
+      lat:newPlace.lat,
+      long:newPlace.long
+    };
+    try {
+      const res= await axios.post("http://localhost:8800/api/pins",newPin);
+      setPins([...pins,res.data])
+    } catch (error) {
+      console.log(error)
+    }
+
+  }
 
   console.log(newPlace && newPlace.lat)
   return (
@@ -67,11 +91,9 @@ export default function App() {
             <p className="desc">{p.desc}</p>
             <label>Rating</label>
             <div className="stars">
-            <FaStar className='star'/>
-            <FaStar className='star'/>
-            <FaStar className='star'/>
-            <FaStar className='star'/>
-            <FaStar className='star'/>
+              {Array(p.rating).fill(<FaStar className='star'/>)}
+            
+          
             </div>
             <label>Information</label>
             <span className="username">Created by <b>{p.username}</b></span>
@@ -88,13 +110,13 @@ export default function App() {
 <Popup longitude={newPlace.long} latitude={newPlace.lat} closeButton={true} closeOnClick={false}
           anchor="left">
             <div>
-              <form className='form'>
+              <form onSubmit={handleSubmit} className='form'>
                 <label>Title</label>
-                <input placeholder='Enter a title'></input>
+                <input onChange={(e)=>setTitle(e.target.value)} placeholder='Enter a title'></input>
                 <label>Review</label>
-                <textarea placeholder='Review this place'/>
+                <textarea  onChange={(e)=>setDesc(e.target.value)}  placeholder='Review this place'/>
                 <label>Rating</label>
-                <select>
+                <select  onChange={(e)=>setRating(e.target.value)} >
                   <option value="1">1</option>
                   <option value="2">2</option>
                   <option value="3">3</option>
